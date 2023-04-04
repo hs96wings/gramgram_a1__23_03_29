@@ -16,17 +16,17 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners(AuditingEntityListener.class) // @CreatedDate, @LastModifiedDate 작동하게 허용
 @ToString
-@Entity
+@Entity // 아래 클래스는 member 클래스와 대응, 아래 클래스와 객체는 테이블의 row에 대응
 @Getter
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @CreatedDate
+    @CreatedDate // insert 할 때 마다
     private LocalDateTime createDate;
-    @LastModifiedDate
+    @LastModifiedDate // update 할 때 마다
     private LocalDateTime modifyDate;
     @Column(unique = true)
     private String username;

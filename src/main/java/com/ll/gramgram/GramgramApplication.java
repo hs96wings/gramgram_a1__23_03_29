@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
-@EnableJpaAuditing
+@EnableJpaAuditing // @EntityListeners(AuditingEntityListener.class)가 작동되게 함
 public class GramgramApplication {
 
 	public static void main(String[] args) {
