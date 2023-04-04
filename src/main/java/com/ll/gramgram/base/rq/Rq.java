@@ -54,4 +54,10 @@ public class Rq {
 
         return member;
     }
+
+    public String historyBack(String msg) {
+        // model.addAttribute와 같은 의미
+        req.setAttribute("alertMsg", msg);
+        return "common/js";
+    }
 }
