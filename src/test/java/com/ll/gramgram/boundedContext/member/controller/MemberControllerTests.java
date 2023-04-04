@@ -4,11 +4,13 @@ import com.ll.gramgram.boundedContext.member.entity.Member;
 import com.ll.gramgram.boundedContext.member.repository.MemberRepository;
 import com.ll.gramgram.boundedContext.member.service.MemberService;
 import jakarta.transaction.Transactional;
+import org.hamcrest.Matcher;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -166,5 +168,24 @@ public class MemberControllerTests {
                 .andExpect(content().string(containsString("""
                         <input type="submit" value="로그인"
                         """.stripIndent().trim())));
+    }
+
+    @Test
+    // @Rollback(value = false) DB에 흔적이 남는다
+    @DisplayName("로그인 처리")
+    void t005() throws Exception {
+        // WHEN
+        ResultActions resultActions = mvc
+                .perform(post("/member/login")
+                        .with(csrf()) // CSRF 키 생성
+                        .param("username", "user1")
+                        .param("password", "1234")
+                )
+                .andDo(print());
+
+        // THEN
+        resultActions
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/**"));
     }
 }
